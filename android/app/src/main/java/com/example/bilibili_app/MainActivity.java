@@ -1,4 +1,4 @@
-package com.example.biliapp;
+package com.example.bilibili_app;
 
 import io.flutter.embedding.android.FlutterActivity;
 
