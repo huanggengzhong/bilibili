@@ -1,3 +1,4 @@
+import 'package:bilibili_app/http/core/mock_adapter.dart';
 import 'package:bilibili_app/http/request/base_request.dart';
 
 import 'hi_error.dart';
@@ -66,11 +67,14 @@ class HiNet {
     prinlog("method:${request.httpMethod()}");
     request.addHeader("token", "123");
     prinlog("header:${request.header}");
+
     // return Future.value({
     //   "statusCode": 200,
     //   "data": {"code": 0, "message": "success"}
     // });
-    //  使用HiNetAdapter模拟数据请求
+    //  使用HiNetAdapter模拟异常数据请求
+    HiNetAdaper adaper = MockAdaptor();
+    return adaper.send(request);
   }
 
 //  统一打印方法

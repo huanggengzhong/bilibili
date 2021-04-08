@@ -1,3 +1,4 @@
+import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:flutter/material.dart';
 
 import 'http/core/hi_net.dart';
@@ -56,8 +57,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
     TestRequest request = TestRequest();
     request.add("aa", "ddd").add("bb", "333");
-    var result = await HiNet.getInstance().fire(request);
-    print("main中的result:$result");
+
+    //使用异常捕获
+    try {
+      var result = await HiNet.getInstance().fire(request);
+      print("main中的result:$result");
+    } on NeedAuth catch (e) {
+      print("main中的NeedAuth:$e");
+    } on NeedLogin catch (e) {
+      print("main中的NeedLogin:$e");
+    } on HiNetError catch (e) {
+      print("main中的HiNetError:$e");
+    } catch (e) {
+      print("main中的其它e:$e");
+    }
 
     // setState(() {
     //   // This call to setState tells the Flutter framework that something has
