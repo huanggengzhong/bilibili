@@ -44,6 +44,7 @@ class HiNet {
     print("result:$result");
     //根据不同的错误状态码返回封装好的异常类
     var status = response.statusCode;
+    print("status:${status}");
     switch (status) {
       case 200:
         return result;
