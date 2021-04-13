@@ -1,4 +1,4 @@
-import 'package:bilibili_app/http/core/mock_adapter.dart';
+import 'package:bilibili_app/http/core/dio_adapter.dart';
 import 'package:bilibili_app/http/request/base_request.dart';
 
 import 'hi_error.dart';
@@ -74,7 +74,10 @@ class HiNet {
     //   "data": {"code": 0, "message": "success"}
     // });
     //  使用HiNetAdapter模拟异常数据请求
-    HiNetAdaper adaper = MockAdaptor();
+    // HiNetAdaper adaper = MockAdaptor();
+
+    //使用真实的dio来发送请求
+    HiNetAdaper adaper = DioAdapter();
     return adaper.send(request);
   }
 

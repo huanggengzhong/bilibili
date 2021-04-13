@@ -34,9 +34,9 @@ abstract class BaseRequest {
     }
     //  http和https的切换
     if (useHttps) {
-      uri = Uri.https(authority(), pathStr, pathParams); //Uri.https()是Uri类提供的方法
+      uri = Uri.https(authority(), pathStr, params); //Uri.https()是Uri类提供的方法
     } else {
-      uri = Uri.http(authority(), pathStr, pathParams);
+      uri = Uri.http(authority(), pathStr, params);
     }
     print("得到的url地址是:${uri.toString()}");
     return uri.toString();
@@ -47,7 +47,7 @@ abstract class BaseRequest {
 //  添加不同参数的方法
   BaseRequest add(String k, Object v) {
     params[k] = v.toString();
-    print("打印add参数的this:${this}");
+    print("打印add参数的this:${this.params}");
     return this;
   }
 

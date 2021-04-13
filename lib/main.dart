@@ -56,7 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
     //测试自己封装的hinet方法
 
     TestRequest request = TestRequest();
-    request.add("aa", "ddd").add("bb", "333");
+    // request.add("aa", "ddd").add("bb", "333");
+    request
+        .add("aa", "ddd")
+        .add("bb", "333")
+        .add("requestPrams", "kkk"); //接口需要的参数
 
     //使用异常捕获
     try {
