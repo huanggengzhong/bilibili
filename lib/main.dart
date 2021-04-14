@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -84,6 +87,23 @@ class _MyHomePageState extends State<MyHomePage> {
     //   // called again, and so nothing would appear to happen.
     //   _counter++;
     // });
+
+    //测试数据转换
+    test();
+  }
+
+  //json和map数据转换:
+  void test() {
+    //json转map
+    const jsonString =
+        "{ \"name\": \"flutter\", \"url\": \"https://coding.imooc.com/class/487.html\" }";
+    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    print("jsonMap:$jsonMap");
+    print("map取值1:${jsonMap['name']}");
+    print("map取值2:${jsonMap['url']}");
+    //  map转json
+    String json = jsonEncode(jsonMap);
+    print("重新得到json:$json");
   }
 
   @override

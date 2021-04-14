@@ -1,5 +1,4 @@
 //统一返回格式适配器
-
 import 'dart:convert';
 
 import 'package:bilibili_app/http/request/base_request.dart';
