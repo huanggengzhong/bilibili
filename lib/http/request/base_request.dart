@@ -1,4 +1,6 @@
 //枚举请求方法类型
+import 'package:bilibili_app/http/dao/login_dao.dart';
+
 enum HttpMethod { GET, POST, DELETE }
 
 //封装基本的请求类
@@ -38,7 +40,12 @@ abstract class BaseRequest {
     } else {
       uri = Uri.http(authority(), pathStr, params);
     }
-    print("得到的url地址是:${uri.toString()}");
+    //增加登录令牌
+    if (needLogin()) {
+      addHeader(LoginDao.BOARING_PASS, LoginDao.getBoardingPass());
+    }
+
+    print("得到的url地址是(如果需要登录会有令牌头携带):${uri.toString()}");
     return uri.toString();
   }
 

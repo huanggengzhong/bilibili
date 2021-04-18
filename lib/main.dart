@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:bilibili_app/db/hi_cache.dart';
 import 'package:bilibili_app/http/core/hi_error.dart';
+import 'package:bilibili_app/http/core/hi_net.dart';
 import 'package:bilibili_app/http/dao/login_dao.dart';
+import 'package:bilibili_app/http/request/notice_request.dart';
 import 'package:flutter/material.dart';
 
 import 'model/test_model.dart';
@@ -110,7 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // test3();
 
     //测试登录接口
-    testLogin();
+    // testLogin();
+
+    //  测试要登录接口
+    testNotice();
   }
 
   //本地json和map数据转换:
@@ -193,6 +198,19 @@ class _MyHomePageState extends State<MyHomePage> {
       print("测试登录NeedAuth:$e");
     } on HiNetError catch (e) {
       print("测试登录HiNetError:$e");
+    }
+  }
+
+  void testNotice() async {
+    print("testNotice测试");
+    try {
+      var notice = await HiNet.getInstance().fire(NoticeRequest());
+    } on NeedLogin catch (e) {
+      print("testNotice_needlogin:$e");
+    } on NeedAuth catch (e) {
+      print("testNotice_NeedAuth:$e");
+    } on HiNetError catch (e) {
+      print("testNotice_HiNetError:${e.message}");
     }
   }
 
