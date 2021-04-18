@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:bilibili_app/db/hi_cache.dart';
 import 'package:bilibili_app/http/core/hi_error.dart';
+import 'package:bilibili_app/http/dao/login_dao.dart';
 import 'package:flutter/material.dart';
 
-import 'http/core/hi_net.dart';
-import 'http/request/test_request.dart';
 import 'model/test_model.dart';
 
 void main() {
@@ -66,29 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _incrementCounter() async {
-    //测试自己封装的hinet方法
-
-    TestRequest request = TestRequest();
-    // request.add("aa", "ddd").add("bb", "333");
-    request
-        .add("aa", "ddd")
-        .add("bb", "333")
-        .add("requestPrams", "kkk"); //接口需要的参数
-
-    //使用异常捕获
-    try {
-      var result = await HiNet.getInstance().fire(request);
-      print("main中的result:$result");
-    } on NeedAuth catch (e) {
-      print("main中的NeedAuth:$e");
-    } on NeedLogin catch (e) {
-      print("main中的NeedLogin:$e");
-    } on HiNetError catch (e) {
-      print("main中的HiNetError:$e");
-    } catch (e) {
-      print("main中的其它e:$e");
-    }
-
     // setState(() {
     //   // This call to setState tells the Flutter framework that something has
     //   // changed in this State, which causes it to rerun the build method below
@@ -97,6 +73,29 @@ class _MyHomePageState extends State<MyHomePage> {
     //   // called again, and so nothing would appear to happen.
     //   _counter++;
     // });
+    //下面依次是学习增加的方法:
+    //测试自己封装的hinet方法
+
+    // TestRequest request = TestRequest();
+    // // request.add("aa", "ddd").add("bb", "333");
+    // request
+    //     .add("aa", "ddd")
+    //     .add("bb", "333")
+    //     .add("requestPrams", "kkk"); //接口需要的参数
+    //
+    // //使用异常捕获
+    // try {
+    //   var result = await HiNet.getInstance().fire(request);
+    //   print("main中的result:$result");
+    // } on NeedAuth catch (e) {
+    //   print("main中的NeedAuth:$e");
+    // } on NeedLogin catch (e) {
+    //   print("main中的NeedLogin:$e");
+    // } on HiNetError catch (e) {
+    //   print("main中的HiNetError:$e");
+    // } catch (e) {
+    //   print("main中的其它e:$e");
+    // }
 
     //测试本地数据转换
     // test();
@@ -108,7 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // test2();
 
     //  测试封装的缓存方法
-    test3();
+    // test3();
+
+    //测试登录接口
+    testLogin();
   }
 
   //本地json和map数据转换:
@@ -174,6 +176,24 @@ class _MyHomePageState extends State<MyHomePage> {
     HiCache.getInstance().setString("aa", "123456");
     var value = HiCache.getInstance().get("aa");
     print("缓存类的值:$value");
+  }
+
+  void testLogin() async {
+    try {
+      //登录
+      // var result2 = await LoginDao.login(
+      //   "admin",
+      //   "123",
+      // );
+      //注册
+      var result2 =
+          await LoginDao.registration("admin", "123", "6597869", "7177");
+      print("测试登录dao:$result2");
+    } on NeedAuth catch (e) {
+      print("测试登录NeedAuth:$e");
+    } on HiNetError catch (e) {
+      print("测试登录HiNetError:$e");
+    }
   }
 
   @override

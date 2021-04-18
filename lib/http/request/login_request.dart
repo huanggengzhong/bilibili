@@ -1,6 +1,6 @@
 import 'package:bilibili_app/http/request/base_request.dart';
 
-class RegistrationRequest extends BaseRequest {
+class LoginRequest extends BaseRequest {
   @override
   HttpMethod httpMethod() {
     // TODO: implement httpMethod
@@ -16,6 +16,6 @@ class RegistrationRequest extends BaseRequest {
   @override
   String path() {
     // TODO: implement path
-    return "/api/user/registration";
+    return "/uapi/user/login";
   }
 }
