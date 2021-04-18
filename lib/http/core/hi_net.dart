@@ -66,7 +66,10 @@ class HiNet {
   Future<dynamic> send<T>(BaseRequest request) async {
     prinlog("url:${request.url()}");
     prinlog("method:${request.httpMethod()}");
-    request.addHeader("token", "123");
+    // request.addHeader("token", "123");//测试
+    request.addHeader("course-flag", "fa");
+    request.addHeader("auto-token", "ZmEtMjAyMS0wNC0xMiAyMToyMjoyMC1mYQ==fa");
+
     prinlog("header:${request.header}");
 
     // return Future.value({

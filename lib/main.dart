@@ -181,13 +181,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void testLogin() async {
     try {
       //登录
-      // var result2 = await LoginDao.login(
-      //   "admin",
-      //   "123",
-      // );
-      //注册
-      var result2 =
-          await LoginDao.registration("admin", "123", "6597869", "7177");
+      var result2 = await LoginDao.login(
+        "admin",
+        "123",
+      );
+      //注册(这里请求会报500,接口要通过app来注册)
+      // var result2 =
+      //     await LoginDao.registration("admin", "123", "6597869", "7177");
       print("测试登录dao:$result2");
     } on NeedAuth catch (e) {
       print("测试登录NeedAuth:$e");

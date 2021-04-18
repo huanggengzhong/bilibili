@@ -52,7 +52,12 @@ abstract class BaseRequest {
   }
 
 //  请求头参数
-  Map<String, dynamic> header = Map();
+//   Map<String, dynamic> header = Map();
+//  人工初始化添加
+  Map<String, dynamic> header = {
+    "course-flag": 'fa',
+    "auto-token": "ZmEtMjAyMS0wNC0xMiAyMToyMjoyMC1mYQ==fa"
+  };
 //  添加请求头方法
   BaseRequest addHeader(String k, Object v) {
     header[k] = v.toString();
