@@ -1,6 +1,5 @@
 import 'package:bilibili_app/widget/appbar.dart';
 import 'package:bilibili_app/widget/login_input.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatefulWidget {
