@@ -5,6 +5,7 @@ import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:bilibili_app/http/core/hi_net.dart';
 import 'package:bilibili_app/http/dao/login_dao.dart';
 import 'package:bilibili_app/http/request/notice_request.dart';
+import 'package:bilibili_app/page/registration_page.dart';
 import 'package:flutter/material.dart';
 
 import 'model/test_model.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page2222'),
+      home: RegistrationPage(), //使用写好的注册页面
+      // home: MyHomePage(title: 'Flutter Demo Home Page2222'),
     );
   }
 }
