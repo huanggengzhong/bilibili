@@ -1,7 +1,12 @@
+import 'package:bilibili_app/widget/appbar.dart';
 import 'package:bilibili_app/widget/login_input.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatefulWidget {
+  final VoidCallback onJumpToLogin;
+
+  const RegistrationPage({Key key, this.onJumpToLogin}) : super(key: key);
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
@@ -10,6 +15,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appbar("登录", "注册", widget.onJumpToLogin),
       body: Container(
         child: ListView(
           //ListView好处可以使键盘弹起
