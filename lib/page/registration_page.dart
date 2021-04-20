@@ -129,7 +129,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       tips = "请输入订单号的后四位";
     }
     if (tips != null) {
-      print("校验没通过,原因:$tips");
+      showWarnToast(tips);
       return;
     }
     //通过验证,发送请求
@@ -144,6 +144,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
       if (result['code'] == 0) {
         showToast('注册成功');
         //这里添加跳转登录
+        if (widget.onJumpToLogin != null) {
+          widget.onJumpToLogin();
+        }
       }
     } on NeedAuth catch (e) {
       showWarnToast(e.message);
