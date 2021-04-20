@@ -54,9 +54,12 @@ class _LoginInputState extends State<LoginInput> {
       Row(
         children: [
           Container(
-            child: Text(
-              widget.title,
-              style: TextStyle(fontSize: 16),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Text(
+                widget.title,
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ),
           _input()
