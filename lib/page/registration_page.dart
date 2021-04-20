@@ -1,4 +1,5 @@
 import 'package:bilibili_app/widget/appbar.dart';
+import 'package:bilibili_app/widget/login_button.dart';
 import 'package:bilibili_app/widget/login_effect.dart';
 import 'package:bilibili_app/widget/login_input.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,12 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   bool protect = false; //是否保护状态
+  bool loginEnable = false; //是否可以点击
+  String userName;
+  String password;
+  String rePassword;
+  String imoocId;
+  String orderId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,9 +71,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
               lineStretch: true,
               obscureText: false,
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              child: LoginButton('注册',
+                  enable: loginEnable, onPressed: checkparams),
+            )
           ],
         ),
       ),
     );
   }
+
+  void checkparams() {}
 }
