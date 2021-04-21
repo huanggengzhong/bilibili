@@ -35,7 +35,8 @@ class LoginDao {
         .add('orderId', orderId);
     var result = await HiNet.getInstance().fire(request);
     print("login_dao的result:$result");
-    if (result['code'] == 0 && result['data' != null]) {
+    if (result['code'] == 0 && result['data'] != null) {
+      print("result['data']值是:${result['data']}");
       //  登录令牌缓存
       HiCache.getInstance().setString(BOARING_PASS, result['data']);
     }

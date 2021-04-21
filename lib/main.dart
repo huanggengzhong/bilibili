@@ -5,7 +5,7 @@ import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:bilibili_app/http/core/hi_net.dart';
 import 'package:bilibili_app/http/dao/login_dao.dart';
 import 'package:bilibili_app/http/request/notice_request.dart';
-import 'package:bilibili_app/page/registration_page.dart';
+import 'package:bilibili_app/page/login_page.dart';
 import 'package:flutter/material.dart';
 
 import 'model/test_model.dart';
@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //初始化缓存放到最顶级,防止The method 'setString' was called on null.报错
+    HiCache.preInit();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -33,7 +35,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: RegistrationPage(), //使用写好的注册页面
+      home: LoginPage(), //使用写好的登录页面
+      // home: RegistrationPage(), //使用写好的注册页面
       // home: MyHomePage(title: 'Flutter Demo Home Page2222'),
     );
   }
@@ -65,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    HiCache.preInit(); //初始化缓存
+    // HiCache.preInit(); //初始化缓存
   }
 
   void _incrementCounter() async {

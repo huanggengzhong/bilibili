@@ -38,25 +38,31 @@ class HiCache {
       prefs = await SharedPreferences.getInstance();
     }
   }
-//  下面是各个缓存方法
-setString(String key,String value){
-    prefs.setString(key, value);
-}
-setDouble(String key,double value){
-    prefs.setDouble(key, value);
-}
 
-setInt(String key,int value){
+//  下面是各个缓存方法
+  setString(String key, String value) {
+    print("缓存设置value:$value");
+    prefs.setString(key, value);
+  }
+
+  setDouble(String key, double value) {
+    prefs.setDouble(key, value);
+  }
+
+  setInt(String key, int value) {
     prefs.setInt(key, value);
-}
-setBool(String key,bool value){
+  }
+
+  setBool(String key, bool value) {
     prefs.setBool(key, value);
-}
-setStringList(String key,List<String> value){
+  }
+
+  setStringList(String key, List<String> value) {
     prefs.setStringList(key, value);
-}
+  }
+
 //取值泛型方法
-T get<T>(String key){
+  T get<T>(String key) {
     return prefs.get(key);
-}
+  }
 }
