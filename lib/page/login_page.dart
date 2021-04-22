@@ -9,6 +9,13 @@ import 'package:bilibili_app/widget/login_input.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  final VoidCallback onJumpRegistion;
+  //成功的回调
+  final VoidCallback onSuccess;
+
+  const LoginPage({Key key, this.onJumpRegistion, this.onSuccess})
+      : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -21,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar("登录", "注册", () {}),
+      appBar: appbar("登录", "注册", widget.onJumpRegistion),
       body: Container(
         child: ListView(
           children: [
@@ -100,7 +107,10 @@ class _LoginPageState extends State<LoginPage> {
       var result = await LoginDao.login(userName, password);
       print("result22222:${result['code']}");
       if (result['code'] == 0) {
-        showToast(result['msg']);
+        showToast("登录成功");
+        if (widget.onSuccess != null) {
+          widget.onSuccess();
+        }
       } else {
         showWarnToast(result['msg']);
       }

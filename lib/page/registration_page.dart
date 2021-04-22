@@ -27,7 +27,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar("登录", "注册", widget.onJumpToLogin),
+      appBar: appbar("注册", "登录", widget.onJumpToLogin),
       body: Container(
         child: ListView(
           //ListView好处可以使键盘弹起
