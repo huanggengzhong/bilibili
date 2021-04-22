@@ -63,7 +63,17 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   final GlobalKey<NavigatorState>
       navigatorKey; //PopNavigatorRouterDelegateMixin源码要求要有navigatorKey
 //构造方法初始化
-  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    //实现路由跳转逻辑
+    HiNavigator.getInstance().registerRouteJump(
+        RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map args}) {
+      _routeStatus = routeStatus;
+      if (routeStatus == RouteStatus.detail) {
+        this.videoModel = args['videoMo'];
+      }
+      notifyListeners();
+    }));
+  }
   //定义路由状态,默认主页
   RouteStatus _routeStatus = RouteStatus.home;
 
@@ -93,34 +103,15 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       //首页不可回退,清空即可
       pages.clear();
       //重新创建首页
-      page = pageWrap(HomePage(
-        onJumpToDetail: (videoModel) {
-          this.videoModel = videoModel;
-          notifyListeners(); //通知数据变化
-        },
-      )); //首页
+      page = pageWrap(HomePage()); //首页
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel));
     } else if (routeStatus == RouteStatus.registration) {
       //注册页
-      page = pageWrap(RegistrationPage(
-        onJumpToLogin: () {
-          _routeStatus = RouteStatus.login;
-          notifyListeners();
-        },
-      ));
+      page = pageWrap(RegistrationPage());
     } else if (routeStatus == RouteStatus.login) {
-      page = pageWrap(LoginPage(
-        onSuccess: () {
-          //登录成功跳转首页
-          _routeStatus = RouteStatus.home;
-          notifyListeners();
-        },
-        onJumpRegistion: () {
-          _routeStatus = RouteStatus.registration;
-          notifyListeners();
-        },
-      ));
+      //登录页
+      page = pageWrap(LoginPage());
     }
 
     //重新创建一个数组,否则pages因引用没有改变不会生效

@@ -1,5 +1,6 @@
 import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:bilibili_app/http/dao/login_dao.dart';
+import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:bilibili_app/util/string_util.dart';
 import 'package:bilibili_app/util/toast.dart';
 import 'package:bilibili_app/widget/appbar.dart';
@@ -9,9 +10,9 @@ import 'package:bilibili_app/widget/login_input.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatefulWidget {
-  final VoidCallback onJumpToLogin;
-
-  const RegistrationPage({Key key, this.onJumpToLogin}) : super(key: key);
+  const RegistrationPage({
+    Key key,
+  }) : super(key: key);
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
@@ -27,7 +28,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar("注册", "登录", widget.onJumpToLogin),
+      appBar: appbar("注册", "登录", () {
+        HiNavigator.getInstance().onJumpTo(RouteStatus.login);
+      }),
       body: Container(
         child: ListView(
           //ListView好处可以使键盘弹起
@@ -144,9 +147,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       if (result['code'] == 0) {
         showToast('注册成功');
         //这里添加跳转登录
-        if (widget.onJumpToLogin != null) {
-          widget.onJumpToLogin();
-        }
+        HiNavigator.getInstance().onJumpTo(RouteStatus.login);
       }
     } on NeedAuth catch (e) {
       showWarnToast(e.message);

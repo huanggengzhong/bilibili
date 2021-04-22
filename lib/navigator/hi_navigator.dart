@@ -50,3 +50,46 @@ class RouteStatusInfo {
 
   RouteStatusInfo(this.routeStatus, this.page);
 }
+
+//监听当前页面上方压后台
+class HiNavigator extends _RouteJumpListener {
+  //创建单例
+  static HiNavigator _instance;
+
+  RouteJumpListener _routeJump;
+  //单例构造方法
+  HiNavigator._();
+  static HiNavigator getInstance() {
+    if (_instance == null) {
+      _instance = HiNavigator._();
+    }
+    return _instance;
+  }
+
+  //注册路由跳转逻辑
+  void registerRouteJump(RouteJumpListener routeJumpListener) {
+    this._routeJump = routeJumpListener;
+  }
+
+  @override
+  void onJumpTo(RouteStatus routeStatus, {Map args}) {
+    // TODO: implement onJumpTo
+    _routeJump.onJumpTo(routeStatus, args: args);
+  }
+}
+
+//声明抽象类来监听跳转
+abstract class _RouteJumpListener {
+  //定义子类必须实现的跳转方法,参数1是跳转路由,参数2是map参数
+  void onJumpTo(RouteStatus routeStatus, {Map args});
+}
+
+//用typeof定义某个类型
+typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map args});
+
+//定义路由跳转逻辑要实现的跳转功能
+class RouteJumpListener {
+  final OnJumpTo onJumpTo;
+//里面有一个非必填的onJumpTo方法
+  RouteJumpListener({this.onJumpTo});
+}
