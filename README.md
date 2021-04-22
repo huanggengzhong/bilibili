@@ -1,4 +1,4 @@
-# 前情提示(升级 flutter 版本的方法)
+# 安装提示(升级 flutter 版本的方法)
 
 1.去官网下载指定版本,比如我这个 bilibiliapp 选择 2.0 stable 版本
 https://flutter.dev/docs/development/tools/sdk/releases

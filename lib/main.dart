@@ -1,8 +1,14 @@
+import 'package:bilibili_app/db/hi_cache.dart';
+import 'package:bilibili_app/http/dao/login_dao.dart';
+import 'package:bilibili_app/page/login_page.dart';
+import 'package:bilibili_app/page/registration_page.dart';
 import 'package:bilibili_app/page/video_detail_page.dart';
 import 'package:flutter/material.dart';
 
 import 'model/video_model.dart';
+import 'navigator/hi_navigator.dart';
 import 'page/home_page.dart';
+import 'util/color.dart';
 
 void main() {
   runApp(BiliApp());
@@ -18,20 +24,40 @@ class _BiliAppState extends State<BiliApp> {
   //创建路由实例
   BiliRouteDelegate _routeDelegate = BiliRouteDelegate();
   //创建路由Parser实例
-  BiliRouteInformationParser _routeInformationParser =
-      BiliRouteInformationParser();
+  // BiliRouteInformationParser _routeInformationParser =
+  //     BiliRouteInformationParser();
   @override
   Widget build(BuildContext context) {
     //定义route
-    var widget = Router(
-      routeInformationParser: _routeInformationParser,
-      routerDelegate: _routeDelegate,
-      routeInformationProvider: PlatformRouteInformationProvider(
-          //当routeInformationParser不为空的时候要设置这个
-          initialRouteInformation: RouteInformation(location: "/") //初始化打开首页
-          ),
-    );
-    return MaterialApp(home: widget);
+
+    // MaterialApp(home: widget);改造成FutureBuilder
+    return FutureBuilder<HiCache>(
+        //进行初始化
+        future: HiCache.preInit(), //先初始化缓存
+        builder: (BuildContext context, AsyncSnapshot<HiCache> snapshot) {
+          //增加判断是否加载完成来显示loading
+          var widget = snapshot.connectionState == ConnectionState.done
+              ? Router(
+                  routerDelegate: _routeDelegate,
+                  // routeInformationParser: _routeInformationParser,
+                  // routeInformationProvider: PlatformRouteInformationProvider(
+                  //     //当routeInformationParser不为空的时候要设置这个routeInformationProvider
+                  //     initialRouteInformation:
+                  //         RouteInformation(location: "/") //初始化打开首页
+                  //     ),
+                )
+              : Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+          return MaterialApp(
+            home: widget,
+            theme: ThemeData(
+              primarySwatch: white,
+            ),
+          );
+        });
   }
 }
 
@@ -48,28 +74,71 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       navigatorKey; //PopNavigatorRouterDelegateMixin源码要求要有navigatorKey
 //构造方法初始化
   BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  //定义路由状态,默认主页
+  RouteStatus _routeStatus = RouteStatus.home;
+
   //创建pages集合
   List<MaterialPage> pages = [];
 
   //创建VideoModel变量
   VideoModel videoModel;
+
 //创建path变量
-  BiliRoutePath path;
+//   BiliRoutePath path;
 
   @override
   Widget build(BuildContext context) {
-    //构建路由堆栈
-    pages = [
-      //把首页放在栈顶
-      pageWrap(HomePage(
+    //新的管理路由堆栈
+    var index = getPageIndex(pages, routeStatus); //通过get方法来获取
+    //定义临时变量,如果路由在堆栈里,则将该页面和它上面的所有页面进行出栈
+    List<MaterialPage> tempPages = pages;
+    if (index != -1) {
+      tempPages = tempPages.sublist(0, index);
+      /* List<int> list = [1, 2, 3, 4, 9, 8, 7, 6];
+  print(list.sublist(2, 5));//[3, 4, 9]*/
+    }
+    //创建我们要的页面
+    var page;
+    if (routeStatus == RouteStatus.home) {
+      //首页不可回退,清空即可
+      pages.clear();
+      //重新创建首页
+      page = pageWrap(HomePage(
         onJumpToDetail: (videoModel) {
           this.videoModel = videoModel;
           notifyListeners(); //通知数据变化
         },
-      )), //首页
-      if (videoModel != null)
-        pageWrap(VideoDetailPage(videoModel)) //这里加了判断,如果videoModel不为空则显示详情页
-    ];
+      )); //首页
+    } else if (routeStatus == RouteStatus.detail) {
+      page = pageWrap(VideoDetailPage(videoModel));
+    } else if (routeStatus == RouteStatus.registration) {
+      //注册页
+      page = pageWrap(RegistrationPage(
+        onJumpToLogin: () {
+          _routeStatus = RouteStatus.login;
+          notifyListeners();
+        },
+      ));
+    } else if (routeStatus == RouteStatus.login) {
+      page = pageWrap(LoginPage());
+    }
+
+    //重新创建一个数组,否则pages因引用没有改变不会生效
+    tempPages = [...tempPages, page];
+    pages = tempPages;
+
+    //构建路由堆栈
+    // pages = [
+    //   //把首页放在栈顶
+    //   pageWrap(HomePage(
+    //     onJumpToDetail: (videoModel) {
+    //       this.videoModel = videoModel;
+    //       notifyListeners(); //通知数据变化
+    //     },
+    //   )), //首页
+    //   if (videoModel != null)
+    //     pageWrap(VideoDetailPage(videoModel)) //这里加了判断,如果videoModel不为空则显示详情页
+    // ];
 
     //build方法返回堆栈信息
     // TODO: implement build
@@ -89,37 +158,52 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     );
   }
 
+  RouteStatus get routeStatus {
+    //这里拦截路由
+    if (_routeStatus != RouteStatus.registration && !hasLogin) {
+      //不是注册页面并且没有登录,返回登录页去
+      return _routeStatus = RouteStatus.login;
+    } else if (videoModel != null) {
+      return _routeStatus = RouteStatus.detail;
+    } else {
+      //返回当前路由状态
+      return _routeStatus;
+    }
+  }
+
+  bool get hasLogin => LoginDao.getBoardingPass() != null;
+
   // @override
   // // TODO: implement navigatorKey
   // GlobalKey<NavigatorState> get navigatorKey => throw UnimplementedError();
 
-  @override
+  // @override
   Future<void> setNewRoutePath(BiliRoutePath path) async {
     // TODO: implement setNewRoutePath
     // throw UnimplementedError();
-    this.path = path;
+    // this.path = path;
   }
 }
 
-//1.创建路由Parser
-class BiliRouteInformationParser extends RouteInformationParser {
-  //必须要实现的抽象方法
-  Future<BiliRoutePath> parseRouteInformation(
-      RouteInformation routeInformation) async {
-    print("BiliRouteInformationParser中的参数:$routeInformation");
-    final uri = Uri.parse(routeInformation.location);
-    print(uri);
-    /*uri.Segments是返回以/分割的数组,下面是案例
-    *  Uri uriAddress1 = new Uri(http://www.contoso.com/title/index.htm);
-       uriAddress1.Segments[0] /
-       uriAddress1.Segments[1] title/
-    * */
-    if (uri.pathSegments.length == 0) {
-      return BiliRoutePath.home();
-    }
-    return BiliRoutePath.detail();
-  }
-}
+//1.创建路由Parser ,可缺省,注意应用与web
+// class BiliRouteInformationParser extends RouteInformationParser {
+//   //必须要实现的抽象方法
+//   Future<BiliRoutePath> parseRouteInformation(
+//       RouteInformation routeInformation) async {
+//     print("BiliRouteInformationParser中的参数:$routeInformation");
+//     final uri = Uri.parse(routeInformation.location);
+//     print(uri);
+//     /*uri.Segments是返回以/分割的数组,下面是案例
+//     *  Uri uriAddress1 = new Uri(http://www.contoso.com/title/index.htm);
+//        uriAddress1.Segments[0] /
+//        uriAddress1.Segments[1] title/
+//     * */
+//     if (uri.pathSegments.length == 0) {
+//       return BiliRoutePath.home();
+//     }
+//     return BiliRoutePath.detail();
+//   }
+// }
 
 //定义泛型
 class BiliRoutePath {
@@ -128,13 +212,6 @@ class BiliRoutePath {
 //  下面是命名构造函数,并初始化
   BiliRoutePath.home() : location = "/";
   BiliRoutePath.detail() : location = "/detail";
-}
-
-//创建页面
-pageWrap(Widget child) {
-  return MaterialPage(
-      key: ValueKey(child.hashCode), //hashCode获取哈希码
-      child: child);
 }
 
 // class MyApp extends StatelessWidget {
