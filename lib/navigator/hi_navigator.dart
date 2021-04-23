@@ -4,6 +4,9 @@ import 'package:bilibili_app/page/registration_page.dart';
 import 'package:bilibili_app/page/video_detail_page.dart';
 import 'package:flutter/material.dart';
 
+//定义路由监听fn
+typedef RouteChangeListenr(RouteStatusInfo current, RouteStatusInfo pre);
+
 //创建页面
 pageWrap(Widget child) {
   return MaterialPage(
@@ -57,6 +60,13 @@ class HiNavigator extends _RouteJumpListener {
   static HiNavigator _instance;
 
   RouteJumpListener _routeJump;
+
+  //创建路由监听集合
+  List<RouteChangeListenr> _listeners = [];
+
+  //定义一个打开过的页面变量
+  RouteStatusInfo _current;
+
   //单例构造方法
   HiNavigator._();
   static HiNavigator getInstance() {
@@ -71,10 +81,43 @@ class HiNavigator extends _RouteJumpListener {
     this._routeJump = routeJumpListener;
   }
 
+  //监听路由页面跳转(添加方法)
+  void addListener(RouteChangeListenr listenr) {
+    if (!_listeners.contains(listenr)) {
+      //如果不在数组里
+      _listeners.add(listenr);
+    }
+  }
+
+  //监听路由页面跳转(移除方法)
+  void removeListener(RouteChangeListenr listenr) {
+    _listeners.remove(listenr);
+  }
+
+  //跳转方法
   @override
   void onJumpTo(RouteStatus routeStatus, {Map args}) {
     // TODO: implement onJumpTo
     _routeJump.onJumpTo(routeStatus, args: args);
+  }
+
+  //通知路由页面变化方法
+  void notify(List<MaterialPage> currentPages, List<MaterialPage> prePages) {
+    if (currentPages == prePages) return;
+    //获取当前路由信息
+    var current = RouteStatusInfo(
+        getStatus(currentPages.last), currentPages.last.child); //栈中最顶部的就是当前页面
+    _notify(current);
+  }
+
+  void _notify(RouteStatusInfo current) {
+    //通知页面变化
+    print("_notify,current当前页面:${current.page}");
+    print("_notify,_current打开后的页面:${_current?.page}");
+    _listeners.forEach((listener) {
+      listener(current, _current);
+    });
+    _current = current; //本地永远是上一次打开的页面
   }
 }
 

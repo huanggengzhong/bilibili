@@ -116,6 +116,10 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
 
     //重新创建一个数组,否则pages因引用没有改变不会生效
     tempPages = [...tempPages, page];
+
+    //通知所有路由变化
+    HiNavigator.getInstance().notify(tempPages, pages); //新前,旧后
+
     pages = tempPages;
 
     //build方法返回堆栈信息
@@ -145,7 +149,10 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
               // 但是如果Route.didPop方法返回的是true，就会把当前路由弹出.
               return false;
             }
+            var tempPages = [...pages];
             pages.removeLast();
+            //通知路由变化
+            HiNavigator.getInstance().notify(pages, tempPages); //新前,旧后
             return true;
           },
         ),
