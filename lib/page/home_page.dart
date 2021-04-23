@@ -9,7 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //定义变量
+  //定义变量fn
   var listener;
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     // TODO: implement dispose
     //移除监听
-    HiNavigator.getInstance().removeListener((current, pre) => null);
+    HiNavigator.getInstance().removeListener(this.listener);
     super.dispose();
   }
 

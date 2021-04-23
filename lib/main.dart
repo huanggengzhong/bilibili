@@ -7,8 +7,8 @@ import 'package:bilibili_app/util/toast.dart';
 import 'package:flutter/material.dart';
 
 import 'model/video_model.dart';
+import 'navigator/bottom_navigator.dart';
 import 'navigator/hi_navigator.dart';
-import 'page/home_page.dart';
 import 'util/color.dart';
 
 void main() {
@@ -103,7 +103,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       //首页不可回退,清空即可
       pages.clear();
       //重新创建首页
-      page = pageWrap(HomePage()); //首页
+      page = pageWrap(BottomNavigator()); //首页
+      // page = pageWrap(HomePage()); //首页
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel));
     } else if (routeStatus == RouteStatus.registration) {
