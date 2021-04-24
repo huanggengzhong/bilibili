@@ -1,3 +1,7 @@
+import 'package:bilibili_app/page/favorite_page.dart';
+import 'package:bilibili_app/page/home_page.dart';
+import 'package:bilibili_app/page/profile_page.dart';
+import 'package:bilibili_app/page/ranking_page.dart';
 import 'package:bilibili_app/util/color.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +14,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   final _defaultColor = Colors.grey;
   final _activeColor = primary;
   int _currentIndex = 0;
-  static int initialPage = 0;
-  final PageController _controller = PageController(initialPage: initialPage);
+  static int initialPage = 0; //pageview导航页面索引
+  final PageController _controller =
+      PageController(initialPage: initialPage); //pageview导航控制器
   List<Widget> _pages;
   bool _hasBuild = false;
   @override
@@ -19,7 +24,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     return Scaffold(
       body: PageView(
         //PageView是页面切换组件
-        children: [],
+        controller: _controller,
+        onPageChanged: (index) => _toJumpTo(index),
+        children: [HomePage(), RankingPage(), FavoritePage(), ProfilePage()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -49,6 +56,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   }
 
   _onJumpto(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  _toJumpTo(int index) {
     setState(() {
       _currentIndex = index;
     });
