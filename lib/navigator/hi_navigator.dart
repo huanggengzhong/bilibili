@@ -1,3 +1,4 @@
+import 'package:bilibili_app/navigator/bottom_navigator.dart';
 import 'package:bilibili_app/page/home_page.dart';
 import 'package:bilibili_app/page/login_page.dart';
 import 'package:bilibili_app/page/registration_page.dart';
@@ -67,6 +68,9 @@ class HiNavigator extends _RouteJumpListener {
   //定义一个打开过的页面变量
   RouteStatusInfo _current;
 
+  //定义一个底部tab变量
+  RouteStatusInfo _bottomTab;
+
   //单例构造方法
   HiNavigator._();
   static HiNavigator getInstance() {
@@ -74,6 +78,12 @@ class HiNavigator extends _RouteJumpListener {
       _instance = HiNavigator._();
     }
     return _instance;
+  }
+
+  //底部tab监听
+  void onBottomTabChange(int index, Widget page) {
+    _bottomTab = RouteStatusInfo(RouteStatus.home, page);
+    _notify(_bottomTab);
   }
 
   //注册路由跳转逻辑
@@ -111,6 +121,12 @@ class HiNavigator extends _RouteJumpListener {
   }
 
   void _notify(RouteStatusInfo current) {
+    //添加首页tab切换监听
+    if (current.page is BottomNavigator && _bottomTab != null) {
+      //明确到具体的tab
+      current = _bottomTab;
+    }
+
     //通知页面变化
     print("_notify,current当前页面:${current.page}");
     print("_notify,_current打开后的页面:${_current?.page}");

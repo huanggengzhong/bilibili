@@ -1,3 +1,4 @@
+import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:bilibili_app/page/favorite_page.dart';
 import 'package:bilibili_app/page/home_page.dart';
 import 'package:bilibili_app/page/profile_page.dart';
@@ -21,17 +22,25 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   bool _hasBuild = false;
   @override
   Widget build(BuildContext context) {
+    _pages=[HomePage(),RankingPage(),FavoritePage(),ProfilePage()];
+    //页面第一次打开是通知打开的是哪个tab
+    if(!_hasBuild){
+      HiNavigator.getInstance().onBottomTabChange(initialPage, _pages[initialPage]);
+      _hasBuild=true;
+    }
+
     return Scaffold(
       body: PageView(
         //PageView是页面切换组件
         controller: _controller,
-        onPageChanged: (index) => _toJumpTo(index),
+        onPageChanged: (index) => _onJumpto(index, pageChange: true),
         children: [HomePage(), RankingPage(), FavoritePage(), ProfilePage()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: _activeColor,
-        onTap: (index) => _onJumpto(index),
+        onTap: (index) => _onJumpto(index, pageChange: false),
+        type: BottomNavigationBarType.fixed,
         items: [
           _bottomItem("首页", Icons.home, 0),
           _bottomItem("排行", Icons.local_fire_department, 1),
@@ -55,13 +64,14 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         ));
   }
 
-  _onJumpto(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  _onJumpto(int index, {pageChange = false}) {
+    if (!pageChange) {
+      //让PageView展示对应tab
+      _controller.jumpToPage(index);
+    } else {
+      HiNavigator.getInstance().onBottomTabChange(index, _pages[index]);
+    }
 
-  _toJumpTo(int index) {
     setState(() {
       _currentIndex = index;
     });
