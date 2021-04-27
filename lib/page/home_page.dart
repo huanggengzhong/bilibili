@@ -1,3 +1,4 @@
+import 'package:bilibili_app/core/hi_state.dart';
 import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:bilibili_app/http/dao/home_dao.dart';
 import 'package:bilibili_app/model/home_mo.dart';
@@ -14,8 +15,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _HomePageState extends HiState<HomePage>
+// class _HomePageState extends State<HomePage>
+    with
+        AutomaticKeepAliveClientMixin,
+        TickerProviderStateMixin {
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true; //解决切换回来没有监听的问题AutomaticKeepAliveClientMixin
