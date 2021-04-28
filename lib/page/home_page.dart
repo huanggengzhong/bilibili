@@ -83,7 +83,10 @@ class _HomePageState extends HiState<HomePage>
               child: TabBarView(
             controller: _controller,
             children: categoryList.map((tab) {
-              return HomeTabPage(name: tab.name);
+              return HomeTabPage(
+                name: tab.name,
+                bannerList: tab.name == '推荐' ? bannerList : null,
+              );
             }).toList(),
           )),
           // Text("首页"),
