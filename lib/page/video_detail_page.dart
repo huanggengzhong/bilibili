@@ -1,8 +1,8 @@
-import 'package:bilibili_app/model/video_model.dart';
+import 'package:bilibili_app/model/home_mo.dart';
 import 'package:flutter/material.dart';
 
 class VideoDetailPage extends StatefulWidget {
-  final VideoModel videoModel;
+  final VideoMo videoModel; //传递VideoMo对象
 
   const VideoDetailPage(this.videoModel);
   @override
@@ -15,7 +15,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        child: Text("视频详情页,得到的id:${widget.videoModel.Vid}"),
+        child: Text("视频详情页,得到的id:${widget.videoModel.vid}"),
       ),
     );
   }

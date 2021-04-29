@@ -1,6 +1,8 @@
 import 'package:bilibili_app/model/home_mo.dart';
+import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+//这里单独对轮播组件进行插件封装,这样如果换的话也方便
 
 class Hibanner extends StatelessWidget {
   final List<BannerMo> bannerList;
@@ -36,7 +38,9 @@ class Hibanner extends StatelessWidget {
 
   _image(BannerMo bannerMo) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _handleClick(bannerMo);
+      },
       child: Container(
         padding: padding,
         child: ClipRRect(
@@ -49,5 +53,15 @@ class Hibanner extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _handleClick(BannerMo bannerMo) {
+    if (bannerMo.type == 'video') {
+      print("VideoMo(vid: bannerMo.url):${VideoMo(vid: bannerMo.url)}");
+      HiNavigator.getInstance().onJumpTo(RouteStatus.detail,
+          args: {'videoMo': VideoMo(vid: bannerMo.url)});
+    } else {
+      print("点击了banner:type是${bannerMo.type},url是:${bannerMo.url}");
+    }
   }
 }

@@ -1,12 +1,12 @@
 import 'package:bilibili_app/db/hi_cache.dart';
 import 'package:bilibili_app/http/dao/login_dao.dart';
+import 'package:bilibili_app/model/home_mo.dart';
 import 'package:bilibili_app/page/login_page.dart';
 import 'package:bilibili_app/page/registration_page.dart';
 import 'package:bilibili_app/page/video_detail_page.dart';
 import 'package:bilibili_app/util/toast.dart';
 import 'package:flutter/material.dart';
 
-import 'model/video_model.dart';
 import 'navigator/bottom_navigator.dart';
 import 'navigator/hi_navigator.dart';
 import 'util/color.dart';
@@ -81,7 +81,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   List<MaterialPage> pages = [];
 
   //创建VideoModel变量
-  VideoModel videoModel;
+  VideoMo videoModel;
 
 //创建path变量
 //   BiliRoutePath path;

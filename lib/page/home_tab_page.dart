@@ -3,9 +3,10 @@ import 'package:bilibili_app/widget/hi_banner.dart';
 import 'package:flutter/material.dart';
 
 class HomeTabPage extends StatefulWidget {
-  final String name;
+  final String categoryName;
   final List<BannerMo> bannerList;
-  const HomeTabPage({Key key, this.name, this.bannerList}) : super(key: key);
+  const HomeTabPage({Key key, this.categoryName, this.bannerList})
+      : super(key: key);
   @override
   _HomeTabPageState createState() => _HomeTabPageState();
 }
