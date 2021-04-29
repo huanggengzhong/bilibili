@@ -22,11 +22,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   bool _hasBuild = false;
   @override
   Widget build(BuildContext context) {
-    _pages=[HomePage(),RankingPage(),FavoritePage(),ProfilePage()];
+    _pages = [HomePage(), RankingPage(), FavoritePage(), ProfilePage()];
     //页面第一次打开是通知打开的是哪个tab
-    if(!_hasBuild){
-      HiNavigator.getInstance().onBottomTabChange(initialPage, _pages[initialPage]);
-      _hasBuild=true;
+    if (!_hasBuild) {
+      HiNavigator.getInstance()
+          .onBottomTabChange(initialPage, _pages[initialPage]);
+      _hasBuild = true;
     }
 
     return Scaffold(
@@ -34,7 +35,14 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         //PageView是页面切换组件
         controller: _controller,
         onPageChanged: (index) => _onJumpto(index, pageChange: true),
-        children: [HomePage(), RankingPage(), FavoritePage(), ProfilePage()],
+        children: [
+          HomePage(
+            onJumpTo: (index) => _onJumpto(index, pageChange: false),
+          ),
+          RankingPage(),
+          FavoritePage(),
+          ProfilePage()
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

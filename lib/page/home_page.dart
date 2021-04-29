@@ -6,11 +6,14 @@ import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:bilibili_app/page/home_tab_page.dart';
 import 'package:bilibili_app/util/color.dart';
 import 'package:bilibili_app/util/toast.dart';
+import 'package:bilibili_app/widget/navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  final ValueChanged<int> onJumpTo;
+  const HomePage({Key key, this.onJumpTo}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -73,6 +76,13 @@ class _HomePageState extends HiState<HomePage>
     return Scaffold(
       body: Column(
         children: [
+          //增加状态栏
+          NavigationBar(
+            height: 50,
+            color: Colors.white,
+            child: _appBar(),
+            statusStyle: StatusStyle.DARK_CONTENT,
+          ),
           Container(
             color: Colors.white,
             padding: EdgeInsets.only(top: 30),
@@ -148,5 +158,63 @@ class _HomePageState extends HiState<HomePage>
     } on HiNetError catch (e) {
       showWarnToast(e.message);
     }
+  }
+
+//自定义appbar
+  _appBar() {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 15,
+        right: 15,
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              if (widget.onJumpTo != null) {
+                widget.onJumpTo(3); //跳转到第三个我的
+              }
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(23),
+              child: Image(
+                height: 46,
+                width: 46,
+                image: AssetImage('images/avatar.png'),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: EdgeInsets.only(left: 10),
+                  height: 32,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  decoration: BoxDecoration(color: Colors.grey[100]),
+                ),
+              ),
+            ),
+          ),
+          Icon(
+            Icons.explore_off_outlined,
+            color: Colors.grey,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 12),
+            child: Icon(
+              Icons.mail_outline,
+              color: Colors.grey,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
