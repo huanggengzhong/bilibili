@@ -14,11 +14,14 @@ class HomeTabPage extends StatefulWidget {
 class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        children: [if (widget.bannerList != null) _banner()], //语法存在即调用
-      ),
-    );
+    //xia消除间距组件
+    return MediaQuery.removePadding(
+        context: context,
+        child: Container(
+          child: ListView(
+            children: [if (widget.bannerList != null) _banner()], //语法存在即调用
+          ),
+        ));
   }
 
   _banner() {
