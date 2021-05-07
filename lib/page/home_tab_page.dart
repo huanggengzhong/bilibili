@@ -1,5 +1,7 @@
+import 'package:bilibili_app/http/core/hi_error.dart';
 import 'package:bilibili_app/http/dao/home_dao.dart';
 import 'package:bilibili_app/model/home_mo.dart';
+import 'package:bilibili_app/util/toast.dart';
 import 'package:bilibili_app/widget/hi_banner.dart';
 import 'package:bilibili_app/widget/video_card.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,8 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class _HomeTabPageState extends State<HomeTabPage> {
+  List<VideoMo> videoList = [];
+  int pageIndex = 1;
   @override
   void initState() {
     // TODO: implement initState
@@ -32,6 +36,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
         context: context,
         child: StaggeredGridView.countBuilder(
           crossAxisCount: 2,
+          itemCount: videoList.length,
           itemBuilder: (BuildContext context, int index) {
             if (widget.bannerList != null && index == 0) {
               //有banner时第一个位置显示banner
@@ -40,12 +45,17 @@ class _HomeTabPageState extends State<HomeTabPage> {
                 child: _banner(),
               );
             } else {
-              return VideoCard(
-                videoMo: vide,
-              );
+              return VideoCard(videoMo: videoList[index]);
             }
           },
-          staggeredTileBuilder: StaggeredTileBuilder,
+          staggeredTileBuilder: (int index) {
+            //显示几行
+            if (widget.bannerList != null && index == 0) {
+              return StaggeredTile.fit(2);
+            } else {
+              return StaggeredTile.fit(1);
+            }
+          },
         ));
     // child: Container(
     //   child: ListView(
@@ -62,18 +72,24 @@ class _HomeTabPageState extends State<HomeTabPage> {
   }
 
 //调用接口方法
-  void _loadData() async {
+  void _loadData({loadMore = false}) async {
+    if (!loadMore) {
+      pageIndex = 1;
+    }
+    var currentIndex = pageIndex + (loadMore ? 1 : 0);
     try {
-      HomeMo result = await HomeDao.get("推荐");
+      HomeMo result = await HomeDao.get(widget.categoryName,
+          pageIndex: currentIndex, pageSize: 50);
       print('loadData():$result');
-      if (result.categoryList != null) {
-        //tab长度变化后需要重新创建TabController,避免报错
-        _controller =
-            TabController(length: result.categoryList.length, vsync: this);
-      }
       setState(() {
-        categoryList = result.categoryList;
-        bannerList = result.bannerList;
+        if (loadMore) {
+          if (result.videoList.isNotEmpty) {
+            videoList = [...videoList, ...result.videoList];
+            pageIndex++;
+          }
+        } else {
+          videoList = result.videoList;
+        }
       });
     } on NeedAuth catch (e) {
       showWarnToast(e.message);
