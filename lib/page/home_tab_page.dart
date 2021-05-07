@@ -35,6 +35,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
         removeTop: true,
         context: context,
         child: StaggeredGridView.countBuilder(
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
           crossAxisCount: 2,
           itemCount: videoList.length,
           itemBuilder: (BuildContext context, int index) {
@@ -66,7 +67,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
   _banner() {
     return Padding(
-      padding: EdgeInsets.only(left: 8, right: 8),
+      padding: EdgeInsets.only(left: 5, right: 5),
       child: Hibanner(widget.bannerList),
     );
   }

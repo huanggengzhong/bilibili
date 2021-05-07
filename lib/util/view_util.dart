@@ -1,7 +1,21 @@
 //状态栏方法
 import 'package:bilibili_app/widget/navigation_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbar_manager/flutter_statusbar_manager.dart';
+
+//带缓存的图片组件
+Widget cachedImage(String url, {double width, double height}) {
+  return CachedNetworkImage(
+    width: width,
+    height: height,
+    imageUrl: url,
+    placeholder: (context, url) => Container(
+      color: Colors.grey[200],
+    ),
+    errorWidget: (context, url, error) => Icon(Icons.error),
+  );
+}
 
 void changeStatusBar(
     {color: Colors.white, StatusStyle statusStyle: StatusStyle.DARK_CONTENT}) {
