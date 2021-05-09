@@ -83,13 +83,51 @@ class VideoCard extends StatelessWidget {
   _infoText() {
     return Expanded(
       child: Container(
+        padding: EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 5),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(videoMo.title),
+            Text(
+              videoMo.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12, color: Colors.black87),
+            ),
             //作者
+            _owner()
           ],
         ),
       ),
+    );
+  }
+
+  _owner() {
+    var owner = videoMo.owner;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: cachedImage(owner.face, height: 24, width: 24),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: Text(
+                owner.name,
+                style: TextStyle(fontSize: 11, color: Colors.black87),
+              ),
+            )
+          ],
+        ),
+        Icon(
+          Icons.more_horiz_sharp,
+          size: 15,
+          color: Colors.grey,
+        )
+      ],
     );
   }
 }
