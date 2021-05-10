@@ -1,4 +1,5 @@
 import 'package:bilibili_app/model/home_mo.dart';
+import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:bilibili_app/util/format_util.dart';
 import 'package:bilibili_app/util/view_util.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,8 @@ class VideoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print(videoMo.url);
+        HiNavigator.getInstance()
+            .onJumpTo(RouteStatus.detail, args: {'videoMo': videoMo});
       },
       child: SizedBox(
         height: 200,
