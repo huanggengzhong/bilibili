@@ -6,6 +6,7 @@ import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:bilibili_app/page/home_tab_page.dart';
 import 'package:bilibili_app/util/color.dart';
 import 'package:bilibili_app/util/toast.dart';
+import 'package:bilibili_app/widget/loading_conteainer.dart';
 import 'package:bilibili_app/widget/navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _HomePageState extends HiState<HomePage>
   //tabs 换成接口分类数据
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -74,7 +76,10 @@ class _HomePageState extends HiState<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: Column(
+        body: LoadingContainer(
+      isLoading: _isLoading,
+      cover: true,
+      child: Column(
         children: [
           //增加状态栏
           NavigationBar(
@@ -109,7 +114,7 @@ class _HomePageState extends HiState<HomePage>
           // )
         ],
       ),
-    );
+    ));
   }
 
   _tabBar() {
@@ -152,10 +157,13 @@ class _HomePageState extends HiState<HomePage>
       setState(() {
         categoryList = result.categoryList;
         bannerList = result.bannerList;
+        _isLoading = false;
       });
     } on NeedAuth catch (e) {
+      _isLoading = false;
       showWarnToast(e.message);
     } on HiNetError catch (e) {
+      _isLoading = false;
       showWarnToast(e.message);
     }
   }
