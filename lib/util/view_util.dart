@@ -25,3 +25,18 @@ void changeStatusBar(
       ? StatusBarStyle.DARK_CONTENT
       : StatusBarStyle.LIGHT_CONTENT);
 }
+
+///黑色线性渐变
+blackLinearGradient({bool fromTop = false}) {
+  return LinearGradient(
+      colors: [
+        Colors.black54,
+        Colors.black45,
+        Colors.black38,
+        Colors.black26,
+        Colors.black12,
+        Colors.transparent
+      ],
+      begin: fromTop ? Alignment.topCenter : Alignment.bottomCenter,
+      end: fromTop ? Alignment.bottomCenter : Alignment.topCenter);
+}

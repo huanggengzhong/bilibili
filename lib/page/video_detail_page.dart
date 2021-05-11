@@ -27,9 +27,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   _videoView() {
     var model = widget.videoModel;
-    return VideoView(
-      model.url,
-      cover: model.cover,
-    );
+    return VideoView(model.url, cover: model.cover, autoPlay: false);
   }
 }

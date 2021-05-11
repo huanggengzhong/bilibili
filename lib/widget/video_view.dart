@@ -1,6 +1,10 @@
-import 'package:chewie/chewie.dart';
+import 'package:bilibili_app/util/color.dart';
+import 'package:bilibili_app/util/view_util.dart';
+import 'package:chewie/chewie.dart' hide MaterialControls;
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+
+import 'hi_video_controls.dart';
 
 class VideoView extends StatefulWidget {
   final String url; //视频地址
@@ -25,6 +29,14 @@ class _VideoViewState extends State<VideoView> {
   //自带播放器和chewie播放器两个控制器
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
+//get封面函数
+  get _plaseholder => FractionallySizedBox(
+        widthFactor: 1,
+        child: cachedImage(widget.cover),
+      );
+  //进度条颜色
+  get _progressColors => ChewieProgressColors(
+      playedColor: primary, handleColor: primary, backgroundColor: Colors.grey);
   @override
   void initState() {
     // TODO: implement initState
@@ -32,11 +44,19 @@ class _VideoViewState extends State<VideoView> {
     //初始化播放器
     _videoPlayerController = VideoPlayerController.network(widget.url);
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
-      aspectRatio: widget.aspectRatio,
-      autoPlay: widget.autoPlay,
-      looping: widget.autoPlay,
-    );
+        videoPlayerController: _videoPlayerController,
+        aspectRatio: widget.aspectRatio,
+        autoPlay: widget.autoPlay,
+        looping: widget.autoPlay,
+        allowMuting: false, //是否允许禁音
+        allowPlaybackSpeedChanging: false, //速度
+        placeholder: _plaseholder,
+        materialProgressColors: _progressColors, //进度条颜色
+        customControls: MaterialControls(
+          showLoadingOnInitialize: false,
+          showBigPlayIcon: false,
+          bottomGradient: blackLinearGradient(),
+        ));
   }
 
   @override
@@ -55,6 +75,7 @@ class _VideoViewState extends State<VideoView> {
     return Container(
       width: screenWidth,
       height: screenHeight,
+      color: Colors.grey,
       child: Chewie(
         controller: _chewieController,
       ),
