@@ -414,6 +414,10 @@ class _MaterialControlsState extends State<MaterialControls>
   }
 
   void _onExpandCollapse() {
+    if (chewieController.videoPlayerController.value.size == null) {
+      print("阻止播放器size报错");
+      return;
+    }
     setState(() {
       _hideStuff = true;
 

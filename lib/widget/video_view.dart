@@ -2,6 +2,8 @@ import 'package:bilibili_app/util/color.dart';
 import 'package:bilibili_app/util/view_util.dart';
 import 'package:chewie/chewie.dart' hide MaterialControls;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:orientation/orientation.dart';
 import 'package:video_player/video_player.dart';
 
 import 'hi_video_controls.dart';
@@ -57,6 +59,9 @@ class _VideoViewState extends State<VideoView> {
           showBigPlayIcon: false,
           bottomGradient: blackLinearGradient(),
         ));
+
+    //解决视频播放器退出全屏bug
+    _chewieController.addListener(_fullScreenListener);
   }
 
   @override
@@ -64,6 +69,7 @@ class _VideoViewState extends State<VideoView> {
     // TODO: implement dispose
     _videoPlayerController.dispose();
     _chewieController.dispose();
+    _chewieController.removeListener(_fullScreenListener);
     super.dispose();
   }
 
@@ -80,5 +86,12 @@ class _VideoViewState extends State<VideoView> {
         controller: _chewieController,
       ),
     );
+  }
+
+  void _fullScreenListener() {
+    Size size = MediaQuery.of(context).size;
+    if (size.width > size.height) {
+      OrientationPlugin.forceOrientation(DeviceOrientation.portraitUp);
+    }
   }
 }
