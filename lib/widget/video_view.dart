@@ -14,9 +14,11 @@ class VideoView extends StatefulWidget {
   final bool autoPlay;
   final bool looping;
   final double aspectRatio;
+  final Widget overlayUI; //视频覆盖标题
 
   const VideoView(this.url,
       {Key key,
+      this.overlayUI,
       this.cover,
       this.autoPlay,
       this.looping,
@@ -58,6 +60,7 @@ class _VideoViewState extends State<VideoView> {
           showLoadingOnInitialize: false,
           showBigPlayIcon: false,
           bottomGradient: blackLinearGradient(),
+          overlayUI: widget.overlayUI,
         ));
 
     //解决视频播放器退出全屏bug

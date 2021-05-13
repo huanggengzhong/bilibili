@@ -62,3 +62,8 @@ allprojects {
 
 去官网下载上面版本的 gradle,地址:https://gradle.org/releases/
 然后找到自己电脑文件里的 gradle 解压替换即可,比如我的:C:\Users\91583\.gradle\wrapper\dists\gradle-6.7-all
+
+
+### 登录账号密码
+admin
+123

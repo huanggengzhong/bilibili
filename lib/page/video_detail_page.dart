@@ -1,4 +1,5 @@
 import 'package:bilibili_app/model/home_mo.dart';
+import 'package:bilibili_app/widget/appbar.dart';
 import 'package:bilibili_app/widget/video_view.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Column(
         children: [
           Text("视频详情页,得到的id:${widget.videoModel.vid}"),
@@ -27,6 +27,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   _videoView() {
     var model = widget.videoModel;
-    return VideoView(model.url, cover: model.cover, autoPlay: false);
+    return VideoView(model.url,
+        cover: model.cover, autoPlay: true, overlayUI: videoAppBar());
   }
 }
