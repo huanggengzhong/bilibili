@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:bilibili_app/model/home_mo.dart';
 import 'package:bilibili_app/widget/appbar.dart';
+import 'package:bilibili_app/widget/navigation_bar.dart';
 import 'package:bilibili_app/widget/video_view.dart';
 import 'package:flutter/material.dart';
 
@@ -15,13 +18,21 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Text("视频详情页,得到的id:${widget.videoModel.vid}"),
-          Text("视频详情页,得到的title:${widget.videoModel.title}"),
-          _videoView()
-        ],
-      ),
+      body: MediaQuery.removePadding(
+          context: context,
+          removeTop: Platform.isIOS,
+          child: Column(
+            children: [
+              if (Platform.isIOS)
+                NavigationBar(
+                  color: Colors.black,
+                  statusStyle: StatusStyle.LIGHT_CONTENT,
+                ),
+              _videoView(),
+              Text("视频详情页,得到的id:${widget.videoModel.vid}"),
+              Text("视频详情页,得到的title:${widget.videoModel.title}"),
+            ],
+          )),
     );
   }
 
