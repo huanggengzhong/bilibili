@@ -218,7 +218,7 @@ class _MaterialControlsState extends State<MaterialControls>
               _cancelAndRestartTimer();
             }
           } else {
-            _playPause();
+            // _playPause();
 
             setState(() {
               _hideStuff = true;
