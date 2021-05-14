@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 //定义枚举状态
 enum StatusStyle { LIGHT_CONTENT, DARK_CONTENT }
 
+//可自定义样式状态栏
 class NavigationBar extends StatefulWidget {
   //传递的变量
   final StatusStyle statusStyle;

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bilibili_app/model/home_mo.dart';
+import 'package:bilibili_app/util/view_util.dart';
 import 'package:bilibili_app/widget/appbar.dart';
 import 'package:bilibili_app/widget/navigation_bar.dart';
 import 'package:bilibili_app/widget/video_view.dart';
@@ -16,6 +17,15 @@ class VideoDetailPage extends StatefulWidget {
 
 class _VideoDetailPageState extends State<VideoDetailPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //给安卓设置状态栏
+    changeStatusBar(
+        color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: MediaQuery.removePadding(
@@ -23,11 +33,11 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
           removeTop: Platform.isIOS,
           child: Column(
             children: [
-              if (Platform.isIOS)
-                NavigationBar(
-                  color: Colors.black,
-                  statusStyle: StatusStyle.LIGHT_CONTENT,
-                ),
+              NavigationBar(
+                color: Colors.black,
+                statusStyle: StatusStyle.LIGHT_CONTENT,
+                height: Platform.isAndroid ? 0 : 46,
+              ),
               _videoView(),
               Text("视频详情页,得到的id:${widget.videoModel.vid}"),
               Text("视频详情页,得到的title:${widget.videoModel.title}"),
