@@ -4,8 +4,11 @@ import 'package:bilibili_app/http/dao/home_dao.dart';
 import 'package:bilibili_app/model/home_mo.dart';
 import 'package:bilibili_app/navigator/hi_navigator.dart';
 import 'package:bilibili_app/page/home_tab_page.dart';
+import 'package:bilibili_app/page/profile_page.dart';
+import 'package:bilibili_app/page/video_detail_page.dart';
 import 'package:bilibili_app/util/color.dart';
 import 'package:bilibili_app/util/toast.dart';
+import 'package:bilibili_app/util/view_util.dart';
 import 'package:bilibili_app/widget/loading_conteainer.dart';
 import 'package:bilibili_app/widget/navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +26,10 @@ class _HomePageState extends HiState<HomePage>
 // class _HomePageState extends State<HomePage>
     with
         AutomaticKeepAliveClientMixin,
-        TickerProviderStateMixin {
+        TickerProviderStateMixin,
+        WidgetsBindingObserver //生命周期监听
+
+{
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true; //解决切换回来没有监听的问题AutomaticKeepAliveClientMixin
@@ -43,6 +49,7 @@ class _HomePageState extends HiState<HomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this); //生命周期监听
 
     //控制器初始化
     _controller = TabController(
@@ -59,14 +66,34 @@ class _HomePageState extends HiState<HomePage>
       } else if (widget == pre?.page || pre?.page is HomePage) {
         print("路由监听方法:离开了首页,被隐藏后台了,相当于onPause钩子");
       }
+      //当详情返回首页恢复状态栏样式
+      if (pre?.page is VideoDetailPage && !(current.page is ProfilePage)) {
+        var statusStyle = StatusStyle.DARK_CONTENT;
+        changeStatusBar(color: Colors.white, statusStyle: statusStyle);
+      }
     });
     loadData();
+  }
+
+  //监听切换
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    print("didChangeAppLifecycleState中的state:$state");
+    switch (state) {
+      case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+        break;
+      case AppLifecycleState.resumed: //从后台切换前台，界面可见
+        changeStatusBar();
+    }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     //移除监听
+    WidgetsBinding.instance.removeObserver(this);
     HiNavigator.getInstance().removeListener(this.listener);
     _controller.dispose();
     super.dispose();
