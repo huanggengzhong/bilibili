@@ -39,8 +39,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                 height: Platform.isAndroid ? 0 : 46,
               ),
               _videoView(),
-              Text("视频详情页,得到的id:${widget.videoModel.vid}"),
-              Text("视频详情页,得到的title:${widget.videoModel.title}"),
+              // Text("视频详情页,得到的id:${widget.videoModel.vid}"),
+              // Text("视频详情页,得到的title:${widget.videoModel.title}"),
+              _buildTabNavigation(),
             ],
           )),
     );
@@ -50,5 +51,14 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     var model = widget.videoModel;
     return VideoView(model.url,
         cover: model.cover, autoPlay: true, overlayUI: videoAppBar());
+  }
+
+  _buildTabNavigation() {
+    return Material(
+      elevation: 5,
+      child: Container(
+        child: Text("哈哈"),
+      ),
+    );
   }
 }
