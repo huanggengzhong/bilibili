@@ -66,6 +66,7 @@ class _HomePageState extends HiState<HomePage>
       } else if (widget == pre?.page || pre?.page is HomePage) {
         print("路由监听方法:离开了首页,被隐藏后台了,相当于onPause钩子");
       }
+
       //当详情返回首页恢复状态栏样式
       if (pre?.page is VideoDetailPage && !(current.page is ProfilePage)) {
         var statusStyle = StatusStyle.DARK_CONTENT;
@@ -86,6 +87,11 @@ class _HomePageState extends HiState<HomePage>
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见
         changeStatusBar();
+        break;
+      case AppLifecycleState.paused: //界面不可见
+        break;
+      case AppLifecycleState.detached: //App结束时调用
+        break;
     }
   }
 
