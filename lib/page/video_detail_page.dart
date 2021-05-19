@@ -56,9 +56,19 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   _buildTabNavigation() {
     return Material(
       elevation: 5,
+      shadowColor: Colors.grey[100],
       child: Container(
-        child: Text("哈哈"),
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 20),
+        height: 39,
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [_tabBar()],
+        ),
       ),
     );
   }
+
+  _tabBar() {}
 }
