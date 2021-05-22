@@ -16,10 +16,7 @@ dart:C:\flutter\bin\cache\dart-sdk
 第一个地方:自己电脑里,比如我:C:\flutter\packages\flutter_tools\gradle\flutter.gradle
 
 ```js
-   //jcenter()
-        // maven {
-        //     url 'https://dl.google.com/dl/android/maven2'
-        // }
+
         maven{
             url 'https://maven.aliyun.com/repository/jcenter'
         }
@@ -33,8 +30,7 @@ dart:C:\flutter\bin\cache\dart-sdk
 ```js
 buildscript {
     repositories {
-        //  google()
-        //  jcenter()
+
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public'}
